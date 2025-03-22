@@ -5,6 +5,8 @@ const session = require("express-session");
 const fs = require("fs");
 const todo = require("./todoService"); // ← ✅ Add this line
 
+const dotenv = require("dotenv");
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;

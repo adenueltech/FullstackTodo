@@ -1,7 +1,8 @@
 // todoService.js
 const admin = require("firebase-admin");
 const serviceAccount = require("./serviceAccountKey.json");
-
+// import dotenv from 'dotenv';
+// dotenv.config();
 // Initialize Firebase Admin
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
