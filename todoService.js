@@ -1,12 +1,13 @@
 const admin = require("firebase-admin");
 require("dotenv").config();
 
-const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT_KEY);
-serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+const serviceAccount = require("./serviceAccountKey.json");
+
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://nueltodoapp.firebaseio.com" // Replace with your actual Firebase Project ID
+  databaseURL: "https://nueltodoapp.firebaseio.com", // Replace with your actual Firebase Project ID
 });
 
 // Initialize Firestore
@@ -16,7 +17,7 @@ const usersCollection = db.collection("users");
 
 // 🔥 Get all todos for a specific user with IDs
 async function getTodosWithIds(username) {
-  const snapshot = await todosCollection.where('username', '==', username).get();
+  const snapshot = await todosCollection.where("username", "==", username).get();
   const todos = [];
   snapshot.forEach((doc) => {
     todos.push({ id: doc.id, ...doc.data() });
@@ -41,7 +42,7 @@ async function editTodo(id, newTask) {
 
 // 👤 Create new user (signup)
 async function createUser(username, password) {
-  const snapshot = await usersCollection.where('username', '==', username).get();
+  const snapshot = await usersCollection.where("username", "==", username).get();
   if (!snapshot.empty) {
     throw new Error("Username already exists");
   }
@@ -51,15 +52,15 @@ async function createUser(username, password) {
 // 🔐 Login user
 async function loginUser(username, password) {
   const snapshot = await usersCollection
-    .where('username', '==', username)
-    .where('password', '==', password)
+    .where("username", "==", username)
+    .where("password", "==", password)
     .get();
 
   if (snapshot.empty) {
     return null;
   }
 
-  return snapshot.docs[0].data(); // you can also return doc.id if needed
+  return snapshot.docs[0].data(); // You can also return doc.id if needed
 }
 
 // ✅ Export all functions
