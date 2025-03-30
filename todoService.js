@@ -1,7 +1,17 @@
 const admin = require("firebase-admin");
 
-// Directly requiring the service account JSON file
-const serviceAccount = require("./serviceAccountKey.json");
+// Check if the environment variable is set
+if (!process.env.SERVICE_ACCOUNT_KEY_BASE64) {
+  throw new Error("Missing environment variable: SERVICE_ACCOUNT_KEY_BASE64");
+}
+
+// Decode the environment variable and parse it as JSON
+const fs = require("fs");
+
+const serviceAccount = JSON.parse(
+  fs.readFileSync("C:/Users/HP/node-todo-app/serviceAccountKey.json", "utf8")
+);
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
